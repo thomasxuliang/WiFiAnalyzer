@@ -1,0 +1,14 @@
+{
+  "filePath": ".spec-workflow/specs/wifi-sniffer/tasks.md",
+  "currentVersion": 1,
+  "snapshots": [
+    {
+      "version": 1,
+      "filename": "snapshot-001.json",
+      "timestamp": "2025-12-03T07:06:34.164Z",
+      "trigger": "initial",
+      "approvalId": "approval_1764745594145_fuhsx5pr2",
+      "approvalTitle": "WiFi Sniffer Tasks"
+    }
+  ]
+}

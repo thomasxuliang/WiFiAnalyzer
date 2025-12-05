@@ -1,0 +1,38 @@
+{
+  "server_url": "https://github.qualcomm.com/jincheng/resources_sync/tree/main",
+  "workspace_path": "C:\\study\\WiFiAnalyzer_monitor",
+  "qgenie_install_dir": "C:\\Users\\thomasxu\\QGenie_Context",
+  "installation_date": "2025-12-03T14:06:35.726545",
+  "installation_mode": "offline",
+  "username": "thomasxu",
+  "code_full_limit": 3,
+  "code_context_limit": 20,
+  "search_result_limit": 50,
+  "code_explorer_limit": 1000,
+  "code_full_lines_limit": 500,
+  "ctags_workers": 16,
+  "python_path": "C:\\Users\\thomasxu\\QGenie_Context\\venv\\Scripts\\python.exe",
+  "cscope_path": "C:\\Users\\thomasxu\\QGenie_Context\\tools\\windows\\cscope.exe",
+  "ctags_path": "C:\\Users\\thomasxu\\QGenie_Context\\tools\\windows\\ctags.exe",
+  "ripgrep_path": "C:\\Users\\thomasxu\\QGenie_Context\\tools\\windows\\rg.exe",
+  "git_path": null,
+  "build_script_path": "C:\\Users\\thomasxu\\QGenie_Context\\mcp\\cscope_mcp.py",
+  "script_path": "C:\\Users\\thomasxu\\QGenie_Context\\mcp\\cscope_mcp.py",
+  "platform": {
+    "system": "Windows",
+    "release": "11",
+    "python_version": "3.13.9"
+  },
+  "code_provider": {
+    "cscope_ctags": [],
+    "tree_sitter_rg": [
+      "java",
+      "kotlin"
+    ]
+  },
+  "selected_build_variant": {
+    "name": "default",
+    "path": "https://github.qualcomm.com/jincheng/resources_sync/tree/main/default.json"
+  },
+  "p4_binary": "C:\\Program Files\\Perforce\\p4.exe"
+}

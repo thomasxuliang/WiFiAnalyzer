@@ -1,0 +1,55 @@
+# 任务文档
+
+- [x] 1. 创建 RootShellExecutor 和基础 Sniffer 架构
+  - 文件: app/src/main/kotlin/com/vrem/wifianalyzer/wifi/sniffer/RootShellExecutor.kt
+  - 文件: app/src/main/kotlin/com/vrem/wifianalyzer/wifi/sniffer/SnifferManager.kt
+  - 创建 `RootShellExecutor` 以安全地处理 `su` 命令。
+  - 创建带有 `SnifferState` 密封类（Idle, Capturing, Error）的 `SnifferManager` 单例。
+  - 目的: 建立特权操作的基础。
+  - _利用: java.lang.Runtime, java.io.DataOutputStream_
+  - _需求: 非功能性需求 (Root 执行隔离)_
+  - _Prompt: Role: Android System Developer | Task: Implement RootShellExecutor for executing su commands and a SnifferManager singleton with a basic state machine (Idle, Capturing) | Restrictions: Handle InterruptedException and IOExceptions gracefully | Success: RootShellExecutor can run a simple 'ls' command as root, SnifferManager compiles with state definitions_
+
+- [x] 2. 实现 SnifferManager 命令序列
+  - 文件: app/src/main/kotlin/com/vrem/wifianalyzer/wifi/sniffer/SnifferManager.kt (更新)
+  - 实现 `startCapture` 逻辑，包含 wcn7750 特定序列:
+    - `svc wifi disable`
+    - `ifconfig wlan0 down`
+    - `rmmod` / `insmod`
+    - `monitor_mode_channel`
+    - `tcpdump`
+  - 实现 `stopCapture` 以终止 tcpdump 进程。
+  - 目的: Sniffer 的核心业务逻辑。
+  - _利用: RootShellExecutor_
+  - _需求: 需求 1, 需求 2, 需求 3_
+  - _Prompt: Role: Android Driver/System Developer | Task: Implement the wcn7750 monitor mode command sequence in SnifferManager.startCapture, including disabling WiFi service and configuring the channel. Implement stopCapture to kill tcpdump. | Restrictions: Use the specific commands provided in the design. Ensure file paths for pcap are correct. | Success: startCapture executes the full sequence, stopCapture kills the process._
+
+- [x] 3. 更新 UI 添加开始/停止按钮和警告
+  - 文件: app/src/main/kotlin/com/vrem/wifianalyzer/wifi/accesspoint/AccessPointDetail.kt
+  - 文件: app/src/main/res/layout/access_point_view_complete.xml (或相关布局)
+  - 在 AP 详情视图中添加 "开始 Sniffer" 按钮。
+  - 点击时实现警告对话框。
+  - 将按钮连接到 `SnifferManager.startCapture`。
+  - 目的: 向用户暴露功能。
+  - _利用: Android AlertDialog, SnifferManager_
+  - _需求: 需求 2, 非功能性需求 (用户警告)_
+  - _Prompt: Role: Android UI Developer | Task: Add a 'Start Sniffer' button to the AccessPointDetail view. When clicked, show an AlertDialog warning about WiFi disconnection. On confirmation, call SnifferManager.startCapture. Update button state based on SnifferManager.isCapturing. | Restrictions: Match existing UI style. Ensure the button is only visible/active when appropriate. | Success: Button appears in AP list, Dialog shows up, Sniffer starts upon confirmation._
+
+- [x] 4. 添加日志和调试信息
+  - 文件: app/src/main/kotlin/com/vrem/wifianalyzer/wifi/sniffer/RootShellExecutor.kt
+  - 文件: app/src/main/kotlin/com/vrem/wifianalyzer/wifi/sniffer/SnifferManager.kt
+  - 为 RootShellExecutor 添加 Logcat 输出 (TAG: WiFiSniffer)。
+  - 记录执行的每个命令及其结果。
+  - 记录 SnifferManager 的状态转换。
+  - 目的: 帮助调试抓包失败的问题。
+  - _利用: android.util.Log_
+  - _需求: 非功能性需求 (可调试性)_
+  - _Prompt: Role: Android Developer | Task: Add verbose logging to RootShellExecutor and SnifferManager using android.util.Log. Log every command executed, its exit code, and exceptions. Log state changes in SnifferManager. | Restrictions: Use TAG "WiFiSniffer". | Success: Logs appear in logcat when button is clicked._
+  - 文件: app/src/main/res/layout/access_point_view_complete.xml (或相关布局)
+  - 在 AP 详情视图中添加 "开始 Sniffer" 按钮。
+  - 点击时实现警告对话框。
+  - 将按钮连接到 `SnifferManager.startCapture`。
+  - 目的: 向用户暴露功能。
+  - _利用: Android AlertDialog, SnifferManager_
+  - _需求: 需求 2, 非功能性需求 (用户警告)_
+  - _Prompt: Role: Android UI Developer | Task: Add a 'Start Sniffer' button to the AccessPointDetail view. When clicked, show an AlertDialog warning about WiFi disconnection. On confirmation, call SnifferManager.startCapture. Update button state based on SnifferManager.isCapturing. | Restrictions: Match existing UI style. Ensure the button is only visible/active when appropriate. | Success: Button appears in AP list, Dialog shows up, Sniffer starts upon confirmation._

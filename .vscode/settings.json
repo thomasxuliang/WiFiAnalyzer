@@ -1,0 +1,7 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "qgenie.resourcesSync.autoSync": true,
+    "qgenie.resourcesSync.sources": [
+        "https://github.qualcomm.com/jincheng/resources_sync/raw/main/default.json"
+    ]
+}

@@ -1,0 +1,14 @@
+{
+  "filePath": ".spec-workflow/specs/wifi-sniffer/design.md",
+  "currentVersion": 1,
+  "snapshots": [
+    {
+      "version": 1,
+      "filename": "snapshot-001.json",
+      "timestamp": "2025-12-03T07:00:01.805Z",
+      "trigger": "initial",
+      "approvalId": "approval_1764745201795_bzouqzn5i",
+      "approvalTitle": "WiFi Sniffer Design"
+    }
+  ]
+}

@@ -17,8 +17,10 @@
  */
 package com.vrem.wifianalyzer.wifi.accesspoint
 
+import android.app.AlertDialog
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.LayoutRes
@@ -30,6 +32,7 @@ import com.vrem.wifianalyzer.wifi.model.WiFiAdditional
 import com.vrem.wifianalyzer.wifi.model.WiFiDetail
 import com.vrem.wifianalyzer.wifi.model.WiFiSecurity
 import com.vrem.wifianalyzer.wifi.model.WiFiSignal
+import com.vrem.wifianalyzer.wifi.sniffer.SnifferManager
 
 @OpenClass
 class AccessPointDetail {
@@ -47,6 +50,7 @@ class AccessPointDetail {
         setViewCompact(view, wiFiDetail, child)
         setViewExtra(view, wiFiDetail)
         setViewVendorShort(view, wiFiDetail.wiFiAdditional)
+        setViewSniffer(view, wiFiDetail)
         return view
     }
 
@@ -214,6 +218,65 @@ class AccessPointDetail {
         view.findViewById<TextView>(R.id.channel_end).text = "${wiFiChannelEnd.channel}"
         view.findViewById<TextView>(R.id.channel_width)?.let {
             it.text = ContextCompat.getString(view.context, wiFiSignal.wiFiWidth.textResource)
+        }
+    }
+
+    private fun setViewSniffer(
+        view: View,
+        wiFiDetail: WiFiDetail
+    ) = view.findViewById<Button>(R.id.snifferButton)?.let { button ->
+        button.visibility = View.VISIBLE
+        if (SnifferManager.isCapturing()) {
+            button.text = "Stop Sniffer"
+            button.setOnClickListener {
+                android.util.Log.d("WiFiSniffer", "Stop button clicked in UI")
+                val result = SnifferManager.stopCapture()
+                android.util.Log.d("WiFiSniffer", "stopCapture() returned: $result")
+                if (result) {
+                    button.text = "Start Sniffer"
+                    // Force UI refresh to update button state
+                    button.postDelayed({
+                        android.util.Log.d("WiFiSniffer", "Requesting UI refresh after stop")
+                    }, 100)
+                }
+            }
+        } else {
+            button.text = "Start Sniffer"
+            button.setOnClickListener {
+                AlertDialog.Builder(view.context)
+                    .setTitle("Start Sniffer")
+                    .setMessage("Starting capture will disable standard WiFi functionality and disconnect any active connections. Continue?")
+                    .setPositiveButton("Yes") { _, _ ->
+                        val channel = wiFiDetail.wiFiSignal.primaryWiFiChannel.channel
+                        val bandwidth = wiFiDetail.wiFiSignal.wiFiWidth.frequencyWidth
+                        button.isEnabled = false
+                        button.text = "Starting..."
+                        SnifferManager.startCapture(channel, bandwidth) { success ->
+                            button.isEnabled = true
+                            if (success) {
+                                button.text = "Stop Sniffer"
+                                // Update click listener to Stop action
+                                button.setOnClickListener {
+                                    android.util.Log.d("WiFiSniffer", "Stop button clicked in UI")
+                                    val result = SnifferManager.stopCapture()
+                                    android.util.Log.d("WiFiSniffer", "stopCapture() returned: $result")
+                                    if (result) {
+                                        button.text = "Start Sniffer"
+                                        // Restore Start click listener
+                                        button.setOnClickListener {
+                                            android.widget.Toast.makeText(view.context, "Please refresh the list to start a new capture", android.widget.Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                }
+                            } else {
+                                button.text = "Start Sniffer"
+                                android.widget.Toast.makeText(view.context, "Failed to start capture. Check logs.", android.widget.Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                    .setNegativeButton("No", null)
+                    .show()
+            }
         }
     }
 }

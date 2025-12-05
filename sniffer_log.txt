@@ -1,0 +1,11 @@
+--------- beginning of main
+08-02 18:23:06.123 I/SnifferService( 6707): startCapture requested with config: CaptureConfig(wiFiDetail=WiFiDetail(wiFiIdentifier=WiFiIdentifier(ssidRaw=000-huafeng-6g, bssid=02:03:7f:12:b0:b0), wiFiSecurity=WiFiSecurity(capabilities=[RSN-SAE-CCMP][ESS][MFPR][MFPC], securityTypes=[4]), wiFiSignal=WiFiSignal(primaryFrequency=7015, centerFrequency=6985, wiFiWidth=MHZ_160, level=-65, extra=WiFiSignalExtra(is80211mc=false, wiFiStandard=AX, fastRoaming=[FR_802_11V])), wiFiAdditional=com.vrem.wifianalyzer.wifi.model.WiFiAdditional@80d1d69, children=[]), channel=7015, bandwidth=160)
+08-02 18:23:06.124 D/SnifferService( 6707): Updating state to: Initializing
+08-02 18:23:06.128 D/SnifferService( 6707): Workflow: Checking permissions...
+08-02 18:23:06.128 D/AdbCommandExecutor( 6707): Executing: whoami
+08-02 18:23:06.236 D/AdbCommandExecutor( 6707): Success: whoami | Output: u0_a262
+08-02 18:23:06.237 E/SnifferService( 6707): Handling error: PermissionError
+08-02 18:23:06.237 D/SnifferService( 6707): Updating state to: Error(error=PermissionError)
+08-02 18:23:06.239 I/SnifferService( 6707): Attempting to restore WiFi...
+08-02 18:23:06.239 I/SnifferService( 6707): WiFi restored successfully.
+08-02 18:23:06.239 D/SnifferService( 6707): Updating state to: Idle
