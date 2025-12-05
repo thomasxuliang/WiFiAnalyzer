@@ -13,3 +13,5 @@ release
 *IntegrationTest.java
 *IntegrationTest.kt
 androidkeystore*
+pcap_files/
+.qgenie_cache/
